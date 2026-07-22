@@ -1,0 +1,213 @@
+:root{
+  --stone-1:#0e0e10; --stone-2:#1a1a1e; --stone-3:#232327; --stone-4:#2f2f34;
+  --edge:#3a3a40; --gold:#e0b84a; --gold-dim:#8a7233; --green:#5fbf60;
+  --red:#c0524b; --text:#d8d8dc; --text-dim:#8a8a92; --mono:'Cascadia Code','JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--stone-1);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:14px}
+.app{display:grid;grid-template-columns:1fr 460px;min-height:100vh}
+@media (max-width:1050px){.app{grid-template-columns:1fr}}
+.col{padding:20px 22px;overflow-y:auto;max-height:100vh}
+.left{border-right:1px solid var(--edge)}
+h1{font-size:17px;letter-spacing:.03em;margin:0 0 4px;color:#fff;display:flex;align-items:center;gap:8px}
+h1 .tag{background:var(--gold-dim);color:#1a1a1e;font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.05em}
+.sub{color:var(--text-dim);font-size:12px;margin:0 0 18px}
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.preset-btn{background:var(--stone-3);border:1px solid var(--edge);color:var(--text);padding:6px 11px;border-radius:5px;font-size:12px;cursor:pointer;transition:.12s}
+.preset-btn:hover{background:var(--stone-4);border-color:var(--gold-dim)}
+section{background:var(--stone-2);border:1px solid var(--edge);border-radius:8px;padding:14px 16px;margin-bottom:14px}
+section > h2{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin:0 0 12px;display:flex;justify-content:space-between;align-items:center}
+.field-row{display:flex;gap:10px;margin-bottom:9px;flex-wrap:wrap}
+.field{flex:1;min-width:110px;display:flex;flex-direction:column;gap:4px}
+.field label{font-size:11px;color:var(--text-dim)}
+input[type=text],input[type=number],select,textarea{
+  background:var(--stone-1);border:1px solid var(--edge);color:var(--text);border-radius:4px;
+  padding:6px 8px;font-size:12.5px;font-family:inherit;width:100%;
+}
+textarea{font-family:var(--mono);resize:vertical}
+input[type=checkbox]{accent-color:var(--gold-dim);width:15px;height:15px}
+.chk{flex-direction:row;align-items:center;gap:6px;flex:0 0 auto}
+.chk label{color:var(--text)}
+.item-card{background:var(--stone-3);border:1px solid var(--edge);border-radius:6px;padding:10px;margin-bottom:8px;position:relative}
+.item-card .del{position:absolute;top:6px;right:6px;background:none;border:none;color:var(--red);cursor:pointer;font-size:15px;line-height:1;padding:2px 6px}
+.item-card .del:hover{color:#fff}
+.add-btn{background:none;border:1px dashed var(--edge);color:var(--gold);border-radius:5px;padding:6px 10px;font-size:12px;cursor:pointer;width:100%;margin-top:2px}
+.add-btn:hover{border-color:var(--gold);background:var(--stone-3)}
+small.hint{color:var(--text-dim);font-size:10.5px;display:block;margin-top:2px}
+
+.preview-frame{background:radial-gradient(ellipse at center,#3a3a2a 0%,#141414 70%);border:1px solid var(--edge);border-radius:10px;padding:26px 18px;margin-bottom:16px}
+.preview-frame-inner{max-width:400px;margin:0 auto}
+
+.yml-actions{display:flex;gap:8px;margin-bottom:10px}
+button.primary{background:var(--gold-dim);color:#1a1a1a;border:none;padding:9px 14px;border-radius:6px;font-weight:700;font-size:12.5px;cursor:pointer;flex:1}
+button.primary:hover{background:var(--gold)}
+button.secondary{background:var(--stone-3);color:var(--text);border:1px solid var(--edge);padding:9px 14px;border-radius:6px;font-size:12.5px;cursor:pointer}
+button.secondary:hover{border-color:var(--gold-dim)}
+#ymlOut{width:100%;height:320px;font-size:11.5px}
+.warn{font-size:11px;color:var(--red);margin-top:4px}
+.credit{font-size:10.5px;color:var(--text-dim);margin-top:8px;line-height:1.5}
+.credit a{color:var(--gold-dim)}
+
+/* ============================================================
+   Everything below this line is ported near-verbatim from
+   misode/misode.github.io (src/styles/global.css), the same
+   CSS that drives the real dialog preview on misode.github.io/dialog.
+   Paths rewritten to ./assets/. Used here to render a
+   pixel-accurate vanilla Minecraft dialog preview locally.
+   ============================================================ */
+
+@font-face {
+  font-family: "MinecraftSeven";
+  src: url("./assets/seven.ttf") format("truetype");
+}
+
+.text-component {
+  font-family: MinecraftSeven, sans-serif;
+}
+
+.preview-overlay {
+  height: min-content;
+  position: relative;
+}
+.preview-overlay > img {
+  display: block;
+  width: 100%;
+}
+.preview-overlay > div {
+  position: absolute;
+}
+
+.dialog-preview {
+  cursor: default;
+}
+.dialog-preview * {
+  flex-shrink: 0;
+}
+.dialog-preview .text-component {
+  font-size: calc(var(--dialog-px) * 10);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.dialog-body {
+  text-align: center;
+}
+.dialog-preview .text-component span {
+  text-shadow: calc(var(--dialog-px) * 1) calc(var(--dialog-px) * 1) var(--shadow-color, transparent);
+}
+
+.dialog-button,
+.dialog-edit-box,
+.dialog-checkbox,
+.dialog-slider-track,
+.dialog-slider-handle,
+.dialog-tooltip {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+}
+
+.dialog-warning-button {
+  flex-shrink: 0;
+  background-image: url(./assets/warning_button.png);
+  background-size: contain;
+}
+.dialog-warning-button:hover {
+  background-image: url(./assets/warning_button_highlighted.png);
+}
+
+.dialog-button {
+  border: solid calc(var(--dialog-px)*2) #000;
+  border-bottom-width: calc(var(--dialog-px)*3);
+  border-image-source: url(./assets/button.png);
+  border-image-slice: 2 2 3 2 fill;
+  border-image-repeat: repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: var(--dialog-px);
+  overflow: hidden;
+}
+.dialog-button:hover {
+  border-image-source: url(./assets/button_highlighted.png);
+}
+
+.dialog-edit-box {
+  border: solid calc(var(--dialog-px) * 1) #000;
+  border-image-source: url(./assets/text_field.png);
+  border-image-slice: 1 fill;
+  border-image-repeat: repeat;
+  display: flex;
+  align-items: flex-start;
+  padding-top: calc(var(--dialog-px) * 4);
+  padding-left: calc(var(--dialog-px) * 4);
+}
+
+.dialog-checkbox {
+  background-image: url(./assets/checkbox.png);
+  background-size: contain;
+}
+.dialog-checkbox.dialog-selected {
+  background-image: url(./assets/checkbox_selected.png);
+}
+
+.dialog-slider {
+  position: relative;
+}
+.dialog-slider-track {
+  border: solid calc(var(--dialog-px) * 1) #000;
+  border-image-source: url(./assets/slider.png);
+  border-image-slice: 1 fill;
+  border-image-repeat: repeat;
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+}
+.dialog-slider-handle {
+  background-image: url(./assets/slider_handle.png);
+  background-size: contain;
+  position: absolute;
+  top: 0; left: 50%;
+  width: calc(var(--dialog-px) * 8);
+  height: 100%;
+  transform: translateX(-50%);
+}
+.dialog-slider-text {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  padding-bottom: var(--dialog-px);
+}
+
+.tooltip-container { position: relative; }
+.tooltip-container > * > * { pointer-events: none; }
+.dialog-tooltip {
+  padding: var(--dialog-px);
+  border: solid calc(var(--dialog-px) * 2) #220044;
+  border-image-source: url(./assets/tooltip.png);
+  border-image-slice: 2 fill;
+  border-image-outset: calc(var(--dialog-px) * 1);
+  width: max-content;
+  max-width: calc(var(--dialog-px) * 150);
+  display: none;
+  position: absolute;
+  pointer-events: none;
+  z-index: 5;
+  padding: calc(var(--dialog-px) * 2);
+  color:#fff;
+}
+.tooltip-container:hover > .dialog-tooltip { display: block; }
+.tooltip-container > .dialog-tooltip .text-component {
+  white-space: pre-wrap;
+  text-align: initial;
+}
+
+/* item icon fallback — the real site uses a full deepslate item
+   renderer with actual game textures; that's out of scope for a
+   local single-page tool, so this is a stylised placeholder slot. */
+.dialog-item-icon{
+  background:linear-gradient(135deg,#5a5a5a,#3a3a3a);
+  border:2px solid #232323;
+  display:flex;align-items:center;justify-content:center;
+  color:#ddd;font-weight:700;overflow:hidden;
+}
+.dialog-item-icon span{font-family:var(--mono);text-transform:uppercase;letter-spacing:-.02em}

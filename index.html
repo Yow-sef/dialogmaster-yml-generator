@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DialogMaster YML Builder</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="app">
+  <div class="col left">
+    <h1>DialogMaster YML Builder <span class="tag">Yowsef Studio</span></h1>
+    <p class="sub">Build a Paper Dialog menu for your <code>DialogMaster</code> plugin with a pixel-accurate vanilla preview, then download the exact <code>menus/*.yml</code> file.</p>
+
+    <div class="presets">
+      <button class="preset-btn" onclick="loadPreset('tpa')">TPA request</button>
+      <button class="preset-btn" onclick="loadPreset('pay')">Confirmation (pay)</button>
+      <button class="preset-btn" onclick="loadPreset('kit')">Item preview (kit)</button>
+      <button class="preset-btn" onclick="loadPreset('notice')">Notice</button>
+      <button class="preset-btn" onclick="loadPreset('blank')">Blank</button>
+    </div>
+
+    <section>
+      <h2>Menu basics</h2>
+      <div class="field-row">
+        <div class="field"><label>Menu ID (also the filename)</label><input id="f_id" type="text" value="my-menu" oninput="render()"></div>
+        <div class="field"><label>Type</label>
+          <select id="f_type" onchange="render()">
+            <option value="multiAction">multiAction</option>
+            <option value="confirmation">confirmation</option>
+            <option value="notice">notice</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Title (MiniMessage)</label><input id="f_title" type="text" value="<gold>My Menu</gold>" oninput="render()"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>External title (optional, shown on pause screen)</label><input id="f_extTitle" type="text" value="" oninput="render()"></div>
+        <div class="field"><label>Open command (optional, e.g. mymenu)</label><input id="f_cmd" type="text" value="" oninput="render()"></div>
+      </div>
+      <div class="field-row">
+        <div class="field" id="wrap_columns"><label>Columns (multiAction only)</label><input id="f_columns" type="number" min="1" value="1" oninput="render()"></div>
+        <div class="field"><label>After action</label>
+          <select id="f_afterAction" onchange="render()">
+            <option value="CLOSE">CLOSE</option>
+            <option value="NONE">NONE</option>
+            <option value="WAIT_FOR_RESPONSE">WAIT_FOR_RESPONSE</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field chk"><input id="f_pause" type="checkbox" checked onchange="render()"><label for="f_pause">Pause game while open</label></div>
+        <div class="field chk"><input id="f_escape" type="checkbox" checked onchange="render()"><label for="f_escape">Can close with Escape</label></div>
+      </div>
+      <div id="pauseWarn" class="warn" style="display:none">after-action: NONE requires pause: false — auto-fixed on export.</div>
+    </section>
+
+    <section>
+      <h2>Body <button class="add-btn" style="width:auto;margin:0" onclick="addBody()">+ Add</button></h2>
+      <div id="bodyList"></div>
+    </section>
+
+    <section>
+      <h2>Inputs <button class="add-btn" style="width:auto;margin:0" onclick="addInput()">+ Add</button></h2>
+      <div id="inputList"></div>
+    </section>
+
+    <section id="buttonsSection">
+      <h2>Buttons</h2>
+      <div id="buttonsArea"></div>
+    </section>
+  </div>
+
+  <div class="col right">
+    <div class="preview-frame">
+      <div class="preview-frame-inner">
+        <div class="preview-overlay dialog-preview" id="previewDialog" style="--dialog-px:1px"></div>
+      </div>
+    </div>
+    <section>
+      <h2>Generated YML</h2>
+      <textarea id="ymlOut" readonly></textarea>
+      <div class="yml-actions" style="margin-top:10px">
+        <button class="primary" onclick="downloadYml()">⬇ Download .yml</button>
+        <button class="secondary" onclick="copyYml()">Copy</button>
+      </div>
+      <small class="hint">Save into <code>plugins/DialogMaster/menus/</code>. The filename must match the Menu ID (e.g. <code>my-menu.yml</code>) — the plugin requires the top-level yml key to equal the filename.</small>
+      <div class="credit">Preview renderer ported from <a href="https://misode.github.io/dialog/" target="_blank">misode.github.io/dialog</a> (MIT-licensed site code) — same layout math and the actual vanilla GUI textures/font Mojang ships with the game, so this matches what players see in-client. Item icons are a stylised placeholder only (no full item-model renderer here).</div>
+    </section>
+  </div>
+</div>
+<script src="./app.js"></script>
+</body>
+</html>
